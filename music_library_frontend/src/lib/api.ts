@@ -9,14 +9,19 @@ const BACKEND_API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://local
 // PUBLIC_INTERFACE
 export async function apiFetch(path: string, options: RequestInit = {}) {
   // Always include cookie credentials
+  // Build headers dynamically to avoid TS error with undefined 'Content-Type'
+  // (Type 'string | undefined' is not assignable to type 'string')
+  const baseHeaders: Record<string, string> = {
+    Accept: 'application/json',
+    ...(options.headers || {}),
+  };
+  if (!(options.body instanceof FormData)) {
+    baseHeaders['Content-Type'] = 'application/json';
+  }
   const opts: RequestInit = {
     credentials: 'include',
     ...options,
-    headers: {
-      ...(options.headers || {}),
-      'Content-Type': options.body instanceof FormData ? undefined : 'application/json',
-      Accept: 'application/json',
-    },
+    headers: baseHeaders,
   };
   const res = await fetch(`${BACKEND_API_URL}${path}`, opts);
   if (!res.ok) {
