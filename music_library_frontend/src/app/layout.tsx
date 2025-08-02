@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
 import { AuthProvider } from "@/context/AuthContext";
 
-// Required: Font loaders must be assigned to a const at module scope
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Load well-supported Google fonts
+const interSans = Inter({
+  variable: "--font-geist-sans", // keep variable name for compatibility with css usage
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const robotoMono = Roboto_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
@@ -28,7 +28,7 @@ export default function RootLayout({
   // TopBar search handler left as no-op for now
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-back text-foreground`}>
+      <body className={`${interSans.variable} ${robotoMono.variable} antialiased bg-back text-foreground`}>
         <AuthProvider>
           <div className="flex h-screen bg-back">
             <Sidebar />
